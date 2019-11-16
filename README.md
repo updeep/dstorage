@@ -1,2 +1,2 @@
 # DStorage
-文件管理服务
+Java File Storage Manager
