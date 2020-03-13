@@ -1,7 +1,7 @@
 package application.server.boot;
 
 import application.server.utils.reader.ConfigureReader;
-import application.server.utils.reader.IConfig;
+import application.server.utils.reader.BaseConfig;
 import application.server.gui.printer.Printer;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
@@ -112,19 +112,19 @@ public class CtlRunner extends BaseCommand {
         } else {
             if (ConfigureReader.instance().getPropertiesStatus() != 0) {
                 switch (ConfigureReader.instance().getPropertiesStatus()) {
-                    case IConfig.INVALID_PORT:
+                    case BaseConfig.INVALID_PORT:
                         Printer.instance.print("错误：服务未能启动，端口设置无效。");
                         break;
-                    case IConfig.INVALID_BUFFER_SIZE:
+                    case BaseConfig.INVALID_BUFFER_SIZE:
                         Printer.instance.print("错误：服务未能启动，缓存设置无效。");
                         break;
-                    case IConfig.INVALID_FILE_SYSTEM_PATH:
+                    case BaseConfig.INVALID_FILE_SYSTEM_PATH:
                         Printer.instance.print("错误：服务未能启动，文件系统路径或某一扩展存储区设置无效。");
                         break;
-                    case IConfig.INVALID_LOG:
+                    case BaseConfig.INVALID_LOG:
                         Printer.instance.print("错误：服务未能启动，日志设置无效。");
                         break;
-                    case IConfig.INVALID_VC:
+                    case BaseConfig.INVALID_VC:
                         Printer.instance.print("错误：服务未能启动，登录验证码设置无效。");
                         break;
                     default:

@@ -1,8 +1,9 @@
 package application.server.boot;
 
 import application.config.AppConfig;
-import application.server.utils.reader.ConfigureReader;
 import application.server.gui.printer.Printer;
+import application.server.utils.SystemUtils;
+import application.server.utils.reader.ConfigureReader;
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.coyote.http11.Http11NioProtocol;
@@ -30,6 +31,7 @@ import org.springframework.http.HttpStatus;
  */
 @Import({AppConfig.class})
 public class AppCtl {
+    private static final String OPEN_HOST = "http://" + SystemUtils.LOCAL_IP;
     private static ApplicationContext context;
     private static boolean run;
 
@@ -46,13 +48,16 @@ public class AppCtl {
         Printer.instance.print("正在初始化服务设置...");
         final String[] args = new String[0];
         if (!AppCtl.run) {
-            ConfigureReader.instance().checkServerPropertiesAndEffectRe();//启动服务前重新检查各项设置并加载
-            if (ConfigureReader.instance().getPropertiesStatus() == 0) {
+            ConfigureReader cr = ConfigureReader.instance();
+            //启动服务前重新检查各项设置并加载
+            cr.checkServerPropertiesAndEffectRe();
+            if (cr.getPropertiesStatus() == 0) {
                 try {
                     Printer.instance.print("正在开启服务引擎...");
                     AppCtl.context = SpringApplication.run(AppCtl.class, args);
                     AppCtl.run = (AppCtl.context != null);
-                    Printer.instance.print("服务引擎已启动。");
+                    Printer.instance.print("服务已启动成功");
+                    Printer.instance.print("Console: " + OPEN_HOST + ":" + cr.getPort() + "/index.html");
                     return AppCtl.run;
                 } catch (Exception e) {
                     return false;
@@ -109,6 +114,7 @@ public class AppCtl {
 
     /**
      * SpringBoot内置Tomcat引擎必要设置：端口、错误页面及HTTPS支持
+     *
      * @return
      */
     @Bean
@@ -155,6 +161,7 @@ public class AppCtl {
 
     /**
      * 生成https支持配置，包括端口号、证书文件、证书密码等
+     *
      * @return
      */
     private Connector createHttpsConnector() {

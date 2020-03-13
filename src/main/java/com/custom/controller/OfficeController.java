@@ -1,5 +1,6 @@
 package com.custom.controller;
 
+import application.server.utils.SystemUtils;
 import com.custom.component.filemanager.utils.FileUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -17,10 +18,11 @@ public class OfficeController {
 
 
 //    @Value("${fileServer.domain}")
-    String domain = "http://127.0.0.1:9001";
+//    String domain = "http://127.0.0.1:9001";
+    String domain = "http://" + SystemUtils.LOCAL_IP + ":" + "9001";
 
 //    @Value("${files.docservice.url.api}")
-    String doc_api = "http://127.0.0.1:9001/web-apps/apps/api/documents/api.js";
+    String doc_api = domain + "/web-apps/apps/api/documents/api.js";
 
     @RequestMapping
     public String office(ModelMap map, String url, String filename) throws UnknownHostException {

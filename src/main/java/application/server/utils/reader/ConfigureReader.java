@@ -4,6 +4,7 @@ import application.server.gui.printer.Printer;
 import application.server.pojo.ServerSetting;
 import application.server.pojo.enumeration.LogLevel;
 import application.server.pojo.enumeration.VCLevel;
+import application.server.utils.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +20,7 @@ import java.util.Properties;
  * @author devcp
  * @version 1.0
  */
-public class ConfigureReader extends IConfig {
+public class ConfigureReader extends BaseConfig {
 
     private static final Logger LOG = LoggerFactory.getLogger(ConfigureReader.class);
 
@@ -59,14 +60,14 @@ public class ConfigureReader extends IConfig {
     private ConfigureReader() {
         this.propertiesStatus = -1;
         this.path = PathUtil.instance();
-        this.DEFAULT_ROOT_APP_PATH = this.path + File.separator + IConfig.ROOT_APP + File.separator;
-        this.DEFAULT_ROOT_WEBAPP_PATH = this.path + File.separator + IConfig.ROOT_WEBAPP + File.separator;
-        this.confdir = this.DEFAULT_ROOT_APP_PATH + IConfig.CONF_DIR_NAME + File.separator;
+        this.DEFAULT_ROOT_APP_PATH = this.path + File.separator + BaseConfig.ROOT_APP + File.separator;
+        this.DEFAULT_ROOT_WEBAPP_PATH = this.path + File.separator + BaseConfig.ROOT_WEBAPP + File.separator;
+        this.confdir = this.DEFAULT_ROOT_APP_PATH + BaseConfig.CONF_DIR_NAME + File.separator;
         this.serverp = new PropertiesUtils();
 
         Printer.instance.print("Server Starting. Loading Configuration...");
 
-        String serverPropPath = this.confdir + IConfig.SERVER_PROPERTIES_FILE;
+        String serverPropPath = this.confdir + BaseConfig.SERVER_PROPERTIES_FILE;
         Printer.instance.print("Load ConfigFile:" + serverPropPath);
 
         final File serverProp = new File(serverPropPath);
@@ -351,7 +352,7 @@ public class ConfigureReader extends IConfig {
             }
             if (this.checkServerPropertiesAndEffect(2) == 0) {
                 try {
-                    this.serverp.store(new FileOutputStream(this.confdir + IConfig.SERVER_PROPERTIES_FILE), null);
+                    this.serverp.store(new FileOutputStream(this.confdir + BaseConfig.SERVER_PROPERTIES_FILE), null);
                     Printer.instance.print("配置更新完毕，准备就绪。");
                     return true;
                 } catch (Exception e) {
@@ -435,7 +436,7 @@ public class ConfigureReader extends IConfig {
 
         // https支持检查及生效处理
         if (checkHttps() != LEGAL_PROPERTIES) {
-            return IConfig.HTTPS_SETTING_ERROR;
+            return BaseConfig.HTTPS_SETTING_ERROR;
         }
         if (seqNumber == 1) {
             Printer.instance.print("检查完毕。");
@@ -495,7 +496,7 @@ public class ConfigureReader extends IConfig {
                 } else {
                     Printer.instance.print(
                             "错误：无法启用https支持，因为Server未能找到https证书文件。您必须在应用主目录内放置PKCS12（必须命名为https.p12）或JKS（必须命名为https.jks）证书。");
-                    return IConfig.HTTPS_SETTING_ERROR;
+                    return BaseConfig.HTTPS_SETTING_ERROR;
                 }
             }
             httpsKeyFile = keyFile.getAbsolutePath();
@@ -509,11 +510,11 @@ public class ConfigureReader extends IConfig {
                     this.httpsPort = Integer.parseInt(httpsports);
                     if (httpsPort <= 0 || httpsPort > 65535) {
                         Printer.instance.print("错误：无法启用https支持，https访问端口号配置不正确。");
-                        return IConfig.HTTPS_SETTING_ERROR;
+                        return BaseConfig.HTTPS_SETTING_ERROR;
                     }
                 } catch (Exception e) {
                     Printer.instance.print("错误：无法启用https支持，https访问端口号配置不正确。");
-                    return IConfig.HTTPS_SETTING_ERROR;
+                    return BaseConfig.HTTPS_SETTING_ERROR;
                 }
             }
             openHttps = true;
@@ -522,7 +523,7 @@ public class ConfigureReader extends IConfig {
     }
 
     public void createDefaultServerPropertiesFile() {
-        Printer.instance.print("正在生成初始服务器配置文件（" + this.confdir + IConfig.SERVER_PROPERTIES_FILE + "）...");
+        Printer.instance.print("正在生成初始服务器配置文件（" + this.confdir + BaseConfig.SERVER_PROPERTIES_FILE + "）...");
         final Properties dsp = new Properties();
         dsp.setProperty("mustLogin", DEFAULT_MUST_LOGIN);
         dsp.setProperty("port", DEFAULT_PORT + "");
@@ -531,7 +532,7 @@ public class ConfigureReader extends IConfig {
         dsp.setProperty("FS.path", DEFAULT_SETTING);
         dsp.setProperty("buff.size", DEFAULT_BUFFER_SIZE + "");
         try {
-            dsp.store(new FileOutputStream(this.confdir + IConfig.SERVER_PROPERTIES_FILE),
+            dsp.store(new FileOutputStream(this.confdir + BaseConfig.SERVER_PROPERTIES_FILE),
                     "# This is the default server configuration setting.");
             Printer.instance.print("初始服务器配置文件生成完毕。");
         } catch (FileNotFoundException e) {

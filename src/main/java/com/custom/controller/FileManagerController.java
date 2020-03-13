@@ -65,12 +65,10 @@ public class FileManagerController {
             // 返回的结果集
             List<JSONObject> fileItems = new ArrayList<>();
 
-            Path dirPath = Paths.get(root, path);
-            init(dirPath);
+            Path dirPath = init(root, path);
             try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(dirPath)) {
 
-                String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
-                SimpleDateFormat dt = new SimpleDateFormat(DATE_FORMAT);
+                SimpleDateFormat dt = new SimpleDateFormat(IConst.DATE_FORMAT);
                 for (Path pathObj : directoryStream) {
                     // 获取文件基本属性
                     BasicFileAttributes attrs = Files.readAttributes(pathObj, BasicFileAttributes.class);
@@ -101,21 +99,29 @@ public class FileManagerController {
     /**
      * 初始化，判断上传目录是否存在，不存在就创建
      *
-     * @param dirPath
+     * @param root
      * @return
      */
-    public String init(Path dirPath) {
+    public Path init(String root, String path) {
+        Path dirPath = null;
         try {
+            // os support windows linux mac
+            String os = System.getProperties().getProperty("os.name");
+            if (os != null && os.toLowerCase().contains(IConst.OS_WINDOWS)) {
+                dirPath = Paths.get(root, path);
+            } else {
+                dirPath = Paths.get(IConst.FOLDER_SEPARATOR, path);
+            }
+
             if (Files.notExists(dirPath)) {
                 //创建文件目录
-                Path path = Files.createDirectories(dirPath);
-                logger.info("init createDirectories - " + path.toString());
+                Path createPath = Files.createDirectories(dirPath);
+                logger.info("init createDirectories - " + createPath.toString());
             }
-            return "initialize success";
         } catch (IOException e) {
             e.printStackTrace();
-            return "Could not initialize storage";
         }
+        return dirPath;
     }
 
     /**

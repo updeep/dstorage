@@ -1,5 +1,7 @@
 package application.server.gui.module;
 
+import application.server.utils.SystemUtils;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -22,7 +24,7 @@ public class BaseDynamicWindow {
     public static final String L_FOOTER_TITLE = "@XX公司";
     public static final String L_TOOL_TIP = "服务控制面板";
 
-    public static final String OPEN_HOST = "http://localhost";
+    public static final String OPEN_HOST = "http://" + SystemUtils.LOCAL_IP;
 
     /**
      * 窗口原始宽度，默认：300

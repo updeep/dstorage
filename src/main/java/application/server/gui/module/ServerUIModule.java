@@ -1,7 +1,7 @@
 package application.server.gui.module;
 
 import application.server.utils.reader.ConfigureReader;
-import application.server.utils.reader.IConfig;
+import application.server.utils.reader.BaseConfig;
 import application.server.gui.callback.*;
 
 import javax.imageio.ImageIO;
@@ -56,7 +56,7 @@ public class ServerUIModule extends BaseDynamicWindow {
         (ServerUIModule.window = new JFrame(L_HEADER_MAIN_TITLE)).setSize(OriginSize_Width, OriginSize_Height);
         ServerUIModule.window.setLocation(100, 100);
         ServerUIModule.window.setResizable(false);
-        final String guiResFolder = ConfigureReader.instance().getAppPath() + IConfig.GUIS_DIR_NAME + File.separator;
+        final String guiResFolder = ConfigureReader.instance().getAppPath() + BaseConfig.GUIS_DIR_NAME + File.separator;
         String iconImage = guiResFolder + "icon.png";
         String iconType = guiResFolder + "icon_tray.png";
         try {
@@ -261,19 +261,19 @@ public class ServerUIModule extends BaseDynamicWindow {
                         } else {
                             if (ConfigureReader.instance().getPropertiesStatus() != 0) {
                                 switch (ConfigureReader.instance().getPropertiesStatus()) {
-                                    case IConfig.INVALID_PORT:
+                                    case BaseConfig.INVALID_PORT:
                                         printMessage("服务无法启动：端口设置无效。");
                                         break;
-                                    case IConfig.INVALID_BUFFER_SIZE:
+                                    case BaseConfig.INVALID_BUFFER_SIZE:
                                         printMessage("服务无法启动：缓存设置无效。");
                                         break;
-                                    case IConfig.INVALID_FILE_SYSTEM_PATH:
+                                    case BaseConfig.INVALID_FILE_SYSTEM_PATH:
                                         printMessage("服务无法启动：文件系统路径或某一扩展存储区设置无效。");
                                         break;
-                                    case IConfig.INVALID_LOG:
+                                    case BaseConfig.INVALID_LOG:
                                         printMessage("服务无法启动：日志设置无效。");
                                         break;
-                                    case IConfig.INVALID_VC:
+                                    case BaseConfig.INVALID_VC:
                                         printMessage("服务无法启动：登录验证码设置无效。");
                                         break;
                                     default:
