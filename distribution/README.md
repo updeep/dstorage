@@ -32,9 +32,9 @@ explain: appName-v{currentDate}
 ## open mode
 - Linux
 `
-sh bin/startup.sh
+sh bin/dstorage-up.sh
 `
 - Windows
 `
-double click on bin/startup.bat
+double click on bin/dstorage-up.bat
 `
