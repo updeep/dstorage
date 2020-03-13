@@ -1,10 +1,20 @@
 ﻿# description
 
+## package setup
+
+1. $: mvn clean compile package
+
+2. copy jar to new dstorage-v{currentDate}
+
+3. compress finished
+
+
 ## directory name rule
 ```
-example：dist.20191016.01
-explain：dist.currDate.vNum
+example: dstorage-v2020.0313
+explain: appName-v{currentDate}
 ```
+
 
 ## dist structure
 
@@ -17,6 +27,7 @@ key|desc
 	├─ logs/            | 日志文件夹
 	├─ webapp/          | 页面静态资源，包含文件上传本地存储files文件夹
 	├─ file-service.jar | 程序jar包
+
 
 ## open mode
 - Linux
